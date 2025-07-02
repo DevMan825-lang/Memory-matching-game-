@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100..700;1,100..700&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap" rel="stylesheet">
+  <title>Memory Match Game</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+      background: linear-gradient(135deg, #6a11cb, #2575fc);
+      padding: 20px;
+    }
+    .gameContainer {
+      width: 350px;
+      height: 300px;
+      background-image: linear-gradient(135deg, rgba(255,255,255,0.3),rgba(255,255,255,0.3));
+      border-radius: 15px;
+      box-shadow: 0 4px 30px rgba(0, 0, 0, 0.37);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border: 2px solid rgba(255, 255, 255, 0.18);
+      padding: 10px;
+    }
+    h1, h2, h3 {
+      color: white;
+      font-family: "Josefin Sans", sans-serif;
+    }
+    .game-board {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+      gap: 10px;
+      max-width: 400px;
+      margin: 20px auto;
+    }
+    .card {
+      width: 80px;
+      height: 80px;
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 32px;
+      cursor: pointer;
+      transform-style: preserve-3d;
+      transform: rotateY(0deg);
+      transition: transform 0.4s ease;
+    }
+    .card.flipped {
+      background: #ffdd57;
+      transform: rotateY(180deg);
+    }
+    #restartBtn, #startBtn {
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-top: 15px;
+    }
+    #shareLink, #leaderboard {
+      color: #fff;
+      margin-top: 15px;
+      text-align: center;
+    }
+    select {
+      width: 200px;
+      height: 32px;
+      margin: 5px;
+      padding: 5px;
+    }
+    .human { margin-left: 50px; }
+    .computer { margin-left: 24px; }
+    #leaderboard ul {
+      list-style: none;
+      padding: 0;
+      margin-top: 10px;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 8px;
+      padding: 10px;
+    }
+    #leaderboard li {
+      margin: 4px 0;
+    }
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background-color: rgba(0,0,0,0.5);
+      justify-content: center;
+      align-items: center;
+    }
+    .modal-content {
+      background: white;
+      padding: 20px 30px;
+      border-radius: 10px;
+      text-align: center;
+    }
+    .modal-content h2 {
+      margin: 0;
+      color: #333;
+    }
+    .modal-content button {
+      margin-top: 15px;
+      padding: 8px 16px;
+      font-size: 14px;
+      cursor: pointer;
+    }
+    h1 {
+      text-align:center;
+      font-size:20px;
+    }
+    .main-container {
+      width:350px;
+      height:70px;
+      background-image: linear-gradient(135deg, rgba(255,255,255,0.3),rgba(255, 255, 255, 0.3));
+      border-radius: 15px;
+      box-shadow: 0 4px 30px rgba(0, 0, 0, 0.37);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border: 2px solid rgba(255, 255, 255, 0.18);
+      font-family: "Nunito", serif;
+    }
+  </style>
+</head>
+<body>
+  <div class="main-container">
+    <h1>Memory Matching Game <br> Developed by Gourav Talukdar</h1>
+  </div>
+  <h2 id="turnInfo" style="text-align:center;">Select number of players</h2>
+
+  <!-- Player selection -->
+  <div id="playerSelect">
+    <label style="color:white">Players: </label>
+    <select id="numHuman" class="human">
+      <option value="1">1</option>
+      <option value="2">2</option>
+      <option value="3">3</option>
+      <option value="4">4</option>
+    </select>
+    <br><br>
+    <label style="color:white">Computers: </label>
+    <select id="numCPU" class="computer">
+      <option value="0">0</option>
+      <option value="1">1</option>
+      <option value="2">2</option>
+      <option value="3">3</option>
+    </select>
+    <br><br>
+    <center><button id="startBtn" onclick="startGame()">Start Game</button></center>
+  </div>
+
+  <!-- Game board -->
+  <div class="game-board" id="gameBoard" style="display:none"></div>
+
+  <!-- Restart button -->
+  <button id="restartBtn" onclick="restartGame()" style="display:none">Restart Game</button>
+
+  <!-- Leaderboard -->
+  <div id="leaderboard" style="display:none">
+    <h3>Leaderboard</h3>
+    <ul id="scoreList"></ul>
+  </div>
+
+  <!-- Winner modal -->
+  <div class="modal" id="winModal">
+    <div class="modal-content">
+      <h2 id="winMessage">Winner!</h2>
+      <button onclick="closeModal()">Close</button>
+    </div>
+  </div>
+
+  <!-- Sound Effects -->
+  <audio id="clickSound" src="https://www.soundjay.com/buttons/sounds/button-29.mp3"></audio>
+  <audio id="winSound" src="https://www.soundjay.com/human/sounds/applause-8.mp3"></audio>
+
+  <script>
+    const emojis = ['🍎','🍌','🍇','🍊','🍉','🍓','🍍','🥝'];
+    let cards = [...emojis, ...emojis];
+    let players = [];
+    let scores = [];
+    let currentPlayer = 0;
+    let firstCard = null, secondCard = null;
+    let lockBoard = false;
+    let gameEnded = false;
+    const TOTAL_PAIRS = 8;
+    let matchedPairs = 0;
+    const clickSound = document.getElementById("clickSound");
+    const winSound = document.getElementById("winSound");
+
+    function shuffle(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+    }
+
+    function startGame() {
+      const numHuman = parseInt(document.getElementById("numHuman").value);
+      const numCPU = parseInt(document.getElementById("numCPU").value);
+      if (numHuman + numCPU > 4) {
+        alert("Max 4 players allowed.");
+        return;
+      }
+
+      players = [];
+      scores = [];
+
+      for (let i = 0; i < numHuman; i++) {
+        players.push({ name: `Player ${i + 1}`, type: "human" });
+      }
+      for (let i = 0; i < numCPU; i++) {
+        players.push({ name: `Computer ${i + 1}`, type: "cpu" });
+      }
+
+      scores = Array(players.length).fill(0);
+      currentPlayer = 0;
+      matchedPairs = 0;
+      gameEnded = false;
+
+      document.getElementById("playerSelect").style.display = "none";
+      document.getElementById("gameBoard").style.display = "grid";
+      document.getElementById("restartBtn").style.display = "none";
+      document.getElementById("leaderboard").style.display = "block";
+
+      cards = [...emojis, ...emojis];
+      shuffle(cards);
+      createBoard();
+      updateTurnInfo();
+      updateLeaderboard();
+      setTimeout(autoTurn, 800);
+    }
+
+    function createBoard() {
+      const board = document.getElementById("gameBoard");
+      board.innerHTML = '';
+      cards.forEach((emoji, index) => {
+        const card = document.createElement('div');
+        card.classList.add('card');
+        card.dataset.emoji = emoji;
+        card.dataset.index = index;
+        card.addEventListener('click', () => handleCardClick(card));
+        board.appendChild(card);
+      });
+    }
+
+    function handleCardClick(card) {
+      if (lockBoard || gameEnded || players[currentPlayer].type !== "human") return;
+      if (card.classList.contains('flipped') || card === firstCard) return;
+      flipCard(card);
+    }
+
+    function flipCard(card) {
+      clickSound.currentTime = 0;
+      clickSound.play();
+      card.classList.add('flipped');
+      card.textContent = card.dataset.emoji;
+
+      if (!firstCard) {
+        firstCard = card;
+        return;
+      }
+
+      secondCard = card;
+      lockBoard = true;
+
+      if (firstCard.dataset.emoji === secondCard.dataset.emoji) {
+        scores[currentPlayer]++;
+        matchedPairs++;
+        updateLeaderboard();
+        setTimeout(() => {
+          resetTurn();
+          checkGameEnd();
+          if (!gameEnded) nextTurn();
+        }, 700);
+      } else {
+        setTimeout(() => {
+          firstCard.classList.remove('flipped');
+          secondCard.classList.remove('flipped');
+          firstCard.textContent = '';
+          secondCard.textContent = '';
+          resetTurn();
+          nextTurn();
+        }, 900);
+      }
+    }
+
+    function resetTurn() {
+      [firstCard, secondCard] = [null, null];
+      lockBoard = false;
+    }
+
+    function nextTurn() {
+      currentPlayer = (currentPlayer + 1) % players.length;
+      updateTurnInfo();
+      setTimeout(autoTurn, 800);
+    }
+
+    function updateTurnInfo() {
+      document.getElementById("turnInfo").textContent = `${players[currentPlayer].name}'s Turn`;
+    }
+
+    function updateLeaderboard() {
+      const scoreList = document.getElementById("scoreList");
+      scoreList.innerHTML = '';
+      players.forEach((p, i) => {
+        const li = document.createElement("li");
+        li.textContent = `${p.name}: ${scores[i]} pairs`;
+        scoreList.appendChild(li);
+      });
+    }
+
+    function checkGameEnd() {
+      if (matchedPairs >= TOTAL_PAIRS) {
+        gameEnded = true;
+        const maxScore = Math.max(...scores);
+        const winners = players.filter((_, i) => scores[i] === maxScore);
+        const winnerNames = winners.map(w => w.name).join(', ');
+
+        winSound.play();
+        document.getElementById("turnInfo").textContent = winners.length > 1
+          ? `It's a draw between ${winnerNames}!`
+          : `${winnerNames} wins!`;
+
+        document.getElementById("restartBtn").style.display = "block";
+        document.getElementById("winMessage").textContent = winners.length > 1
+          ? `It's a draw between ${winnerNames}!`
+          : `${winnerNames} won the game!`;
+
+        document.getElementById("winModal").style.display = "flex";
+      }
+    }
+
+    function autoTurn() {
+      if (gameEnded || players[currentPlayer].type !== "cpu") return;
+      let unflipped = [...document.querySelectorAll('.card:not(.flipped)')];
+      if (unflipped.length >= 2) {
+        const [card1, card2] = unflipped.sort(() => 0.5 - Math.random()).slice(0, 2);
+        flipCard(card1);
+        setTimeout(() => flipCard(card2), 600);
+      }
+    }
+
+    function closeModal() {
+      document.getElementById("winModal").style.display = "none";
+    }
+
+    function restartGame() {
+      document.getElementById("playerSelect").style.display = "block";
+      document.getElementById("gameBoard").style.display = "none";
+      document.getElementById("restartBtn").style.display = "none";
+      document.getElementById("turnInfo").textContent = "Select number of players";
+      document.getElementById("leaderboard").style.display = "none";
+    }
+  </script>
+</body>
+</html>
