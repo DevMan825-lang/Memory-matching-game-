@@ -1,0 +1,127 @@
+* {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+      background: linear-gradient(135deg, #6a11cb, #2575fc);
+      padding: 20px;
+    }
+    .gameContainer {
+      width: 350px;
+      height: 300px;
+      background-image: linear-gradient(135deg, rgba(255,255,255,0.3),rgba(255,255,255,0.3));
+      border-radius: 15px;
+      box-shadow: 0 4px 30px rgba(0, 0, 0, 0.37);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border: 2px solid rgba(255, 255, 255, 0.18);
+      padding: 10px;
+    }
+    h1, h2, h3 {
+      color: white;
+      font-family: "Josefin Sans", sans-serif;
+    }
+    .game-board {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+      gap: 10px;
+      max-width: 400px;
+      margin: 20px auto;
+    }
+    .card {
+      width: 80px;
+      height: 80px;
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 32px;
+      cursor: pointer;
+      transform-style: preserve-3d;
+      transform: rotateY(0deg);
+      transition: transform 0.4s ease;
+    }
+    .card.flipped {
+      background: #ffdd57;
+      transform: rotateY(180deg);
+    }
+    #restartBtn, #startBtn {
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-top: 15px;
+    }
+    #shareLink, #leaderboard {
+      color: #fff;
+      margin-top: 15px;
+      text-align: center;
+    }
+    select {
+      width: 200px;
+      height: 32px;
+      margin: 5px;
+      padding: 5px;
+    }
+    .human { margin-left: 50px; }
+    .computer { margin-left: 24px; }
+    #leaderboard ul {
+      list-style: none;
+      padding: 0;
+      margin-top: 10px;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 8px;
+      padding: 10px;
+    }
+    #leaderboard li {
+      margin: 4px 0;
+    }
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background-color: rgba(0,0,0,0.5);
+      justify-content: center;
+      align-items: center;
+    }
+    .modal-content {
+      background: white;
+      padding: 20px 30px;
+      border-radius: 10px;
+      text-align: center;
+    }
+    .modal-content h2 {
+      margin: 0;
+      color: #333;
+    }
+    .modal-content button {
+      margin-top: 15px;
+      padding: 8px 16px;
+      font-size: 14px;
+      cursor: pointer;
+    }
+    h1 {
+      text-align:center;
+      font-size:20px;
+    }
+    .main-container {
+      width:350px;
+      height:70px;
+      background-image: linear-gradient(135deg, rgba(255,255,255,0.3),rgba(255, 255, 255, 0.3));
+      border-radius: 15px;
+      box-shadow: 0 4px 30px rgba(0, 0, 0, 0.37);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border: 2px solid rgba(255, 255, 255, 0.18);
+      font-family: "Nunito", serif;
+    }

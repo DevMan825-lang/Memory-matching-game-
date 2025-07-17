@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100..700;1,100..700&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap" rel="stylesheet">
+  <title>Memory Match Game</title>
+  <link rel="stylesheet" href="style.css"/> 
+</head>
+<body>
+  <div class="main-container">
+    <h1>Memory Matching Game <br> Developed by Gourav Talukdar</h1>
+  </div>
+  <h2 id="turnInfo" style="text-align:center;">Select number of players</h2>
+
+  <!-- Player selection -->
+  <div id="playerSelect">
+    <label style="color:white">Players: </label>
+    <select id="numHuman" class="human">
+      <option value="1">1</option>
+      <option value="2">2</option>
+      <option value="3">3</option>
+      <option value="4">4</option>
+    </select>
+    <br><br>
+    <label style="color:white">Computers: </label>
+    <select id="numCPU" class="computer">
+      <option value="0">0</option>
+      <option value="1">1</option>
+      <option value="2">2</option>
+      <option value="3">3</option>
+    </select>
+    <br><br>
+    <center><button id="startBtn" onclick="startGame()">Start Game</button></center>
+  </div>
+
+  <!-- Game board -->
+  <div class="game-board" id="gameBoard" style="display:none"></div>
+
+  <!-- Restart button -->
+  <button id="restartBtn" onclick="restartGame()" style="display:none">Restart Game</button>
+
+  <!-- Leaderboard -->
+  <div id="leaderboard" style="display:none">
+    <h3>Leaderboard</h3>
+    <ul id="scoreList"></ul>
+  </div>
+
+  <!-- Winner modal -->
+  <div class="modal" id="winModal">
+    <div class="modal-content">
+      <h2 id="winMessage">Winner!</h2>
+      <button onclick="closeModal()">Close</button>
+    </div>
+  </div>
+
+  <!-- Sound Effects -->
+  <audio id="clickSound" src="https://www.soundjay.com/buttons/sounds/button-29.mp3"></audio>
+  <audio id="winSound" src="https://www.soundjay.com/human/sounds/applause-8.mp3"></audio>
+
+  <script src="main.js">
+ 
+</body>
+</html>
